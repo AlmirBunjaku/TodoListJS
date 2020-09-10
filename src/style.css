@@ -3,3 +3,34 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+header {
+    text-align: center;
+    padding: 30px;
+}
+
+#wrapper {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 300px 1fr;
+}
+
+#projects-container {
+    display: grid;
+    grid-template-rows: 1fr 50px;
+}
+
+#projects-list {
+    min-height: 450px;
+    background-color: lightgrey;
+}
+
+#todo-container {
+    display: grid;
+    grid-template-rows: 1fr 50px;
+}
+
+#todo-list {
+    min-height: 450px;
+    background-color: wheat;
+}
