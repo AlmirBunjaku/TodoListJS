@@ -1,4 +1,2 @@
-import { projectFactory } from './project';
-import { todoFactory } from './todo';
-import { noteFactory } from './note';
+import * as dom from './dom';
 import './style.css';
