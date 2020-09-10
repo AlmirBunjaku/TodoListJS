@@ -33,6 +33,9 @@ const todoControl = {
     deleteNote(noteIndex) {
         this.notes.splice(noteIndex, 1);
     },
+    resetNotes() {
+        this.notes.splice(0, this.notes.length);
+    },
     getNotes() {
         return this.notes;
     },
