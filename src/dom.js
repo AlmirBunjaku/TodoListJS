@@ -1,21 +1,49 @@
 import { control } from './control';
+import { projectControl } from './project';
+import { todoControl } from './todo';
+import { noteControl } from './note';
+import { format } from 'date-fns';
+import { parseISO } from 'date-fns/parseISO';
 
-const projects = control.getProjectsArray();
+const DOMcontrol = (() => {
+    const newProjectButton = document.querySelector('#new-project-button');
+    newProjectButton.addEventListener('click', () => {
+        displayProjectModal();
+        addNewProject(); // ovaj dio prebaciti u display
+    })
 
-const projectsList = document.querySelector('#projects-list');
-projects.forEach((item) => {
-    const name = document.createElement('p');
-    name.textContent = item.name;
-    name.className = 'project-name';
+    const displayProjectModal = () => {
+        let modal = document.querySelector('#new-project-modal');
+        modal.style.display = 'block';
 
-    const description = document.createElement('p');
-    description.textContent = item.description;
-    description.className = 'project-description';
+        let cancelButton = document.querySelector('.cancel-button');
+        cancelButton.addEventListener('click', () => {
+            modal.style.display = 'none';
+        })
 
-    let projectContainer = document.createElement('div');
-    projectContainer.className = 'project-class';
+        window.addEventListener('click', (event) => {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
 
-    projectContainer.appendChild(name);
-    projectContainer.appendChild(description);
-    projectsList.appendChild(projectContainer);
-})
+    const addNewProject = () => {
+        let newProjectNameInput = document.querySelector('#new-project-name-input');
+        let newProjectDescriptionInput = document.querySelector('#new-project-description-input');
+        let modal = document.querySelector('#new-project-modal');
+
+        let addButton = document.querySelector('.modal-add-button');
+        addButton.addEventListener('click', () => {
+            if (newProjectNameInput.value == '' || newProjectDescriptionInput.value == '') {
+                alert('Please enter all necessary information.');
+            } else {
+                control.addProject(newProjectNameInput.value, newProjectDescriptionInput.value);
+                control.changeCurrentProject(control.getProjectsArray().length - 1);
+                modal.style.display = 'none';
+                newProjectNameInput.value = '';
+                newProjectDescriptionInput.value = '';
+            }
+        })
+    }
+})();
