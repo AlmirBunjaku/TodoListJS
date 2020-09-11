@@ -37,9 +37,9 @@ const control = (() => {
         currentProjectIndex = null;
     };
 
-    const addTodo = (index, name, description, priority, dueDate) => {
+    const addTodo = (projectIndex, name, description, priority, dueDate) => {
         const todo = todoFactory(name, description, priority, dueDate);
-        projects[index].addTodo(todo);
+        projects[projectIndex].addTodo(todo);
     };
     const deleteTodo = (projectIndex, todoIndex) => {
         projects[projectIndex].deleteTodo(todoIndex);
