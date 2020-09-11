@@ -9,16 +9,21 @@ const DOMcontrol = (() => {
     const newProjectButton = document.querySelector('#new-project-button');
     newProjectButton.addEventListener('click', () => {
         displayProjectModal();
-        addNewProject(); // ovaj dio prebaciti u display
+        addNewProject();
     })
 
+    let newProjectNameInput = document.querySelector('#new-project-name-input');
+    let newProjectDescriptionInput = document.querySelector('#new-project-description-input');
+    let modal = document.querySelector('#new-project-modal');
+
     const displayProjectModal = () => {
-        let modal = document.querySelector('#new-project-modal');
         modal.style.display = 'block';
 
         let cancelButton = document.querySelector('.cancel-button');
         cancelButton.addEventListener('click', () => {
             modal.style.display = 'none';
+            newProjectNameInput.value = '';
+            newProjectDescriptionInput.value = '';
         })
 
         window.addEventListener('click', (event) => {
@@ -29,21 +34,20 @@ const DOMcontrol = (() => {
     }
 
     const addNewProject = () => {
-        let newProjectNameInput = document.querySelector('#new-project-name-input');
-        let newProjectDescriptionInput = document.querySelector('#new-project-description-input');
-        let modal = document.querySelector('#new-project-modal');
-
         let addButton = document.querySelector('.modal-add-button');
-        addButton.addEventListener('click', () => {
+        addButton.addEventListener('click', (event) => {
             if (newProjectNameInput.value == '' || newProjectDescriptionInput.value == '') {
                 alert('Please enter all necessary information.');
             } else {
                 control.addProject(newProjectNameInput.value, newProjectDescriptionInput.value);
                 control.changeCurrentProject(control.getProjectsArray().length - 1);
+                console.log(control.getCurrentProject());
+                console.log(control.getProjectsArray());
                 modal.style.display = 'none';
                 newProjectNameInput.value = '';
                 newProjectDescriptionInput.value = '';
             }
+            event.stopImmediatePropagation();
         })
     }
 })();
