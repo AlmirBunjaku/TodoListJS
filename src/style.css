@@ -31,8 +31,23 @@ header {
 
 #projects-list {
     min-height: 450px;
+    max-height: 450px;
     background-color: lightgrey;
-    overflow: auto;
+    overflow-y: auto;
+}
+
+.project-tab {
+    display: grid;
+    grid-template-columns: 200px 30px 30px;
+    grid-template-rows: 30px;
+    justify-items: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.project-tab button {
+    width: 25px;
+    height: 25px;
 }
 
 #todo-container {

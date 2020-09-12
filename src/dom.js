@@ -7,6 +7,52 @@ import { parseISO } from 'date-fns/parseISO';
 
 const DOMcontrol = (() => {
 
+    const renderProjects = () => {
+        const projectsList = document.querySelector('#projects-list');
+        while (projectsList.firstChild) {
+            projectsList.removeChild(projectsList.firstChild);
+        }
+
+        for (let i = 0; i < control.getProjectsArray().length; i++) {
+
+            const projectName = document.createElement('h3');
+            projectName.id = 'project-' + i;
+            projectName.className = 'project-name';
+            projectName.textContent = control.getProjectsArray()[i].name;
+
+            const editButton = document.createElement('button');
+            editButton.id = 'edit-' + i;
+            editButton.className = 'edit-project';
+            editButton.textContent = '/';
+
+            const deleteButton = document.createElement('button');
+            deleteButton.id = 'delete-' + i;
+            deleteButton.className = 'delete-project';
+            deleteButton.textContent = 'X';
+
+            const projectTab = document.createElement('div');
+            projectTab.id = 'project-tab-' + i;
+            projectTab.className = 'project-tab';
+
+            projectTab.appendChild(projectName);
+            projectTab.appendChild(editButton);
+            projectTab.appendChild(deleteButton);
+
+            projectsList.appendChild(projectTab);
+        }
+
+        let deleteButtons = document.querySelectorAll('.delete-project');
+        deleteButtons.forEach((deleteButton) => {
+            deleteButton.addEventListener('click', () => {
+                control.deleteProject(deleteButton.id.split('-')[1]);
+                renderProjects();
+            });
+        })
+
+    }
+
+    renderProjects();
+
     const newProjectButton = document.querySelector('#new-project-button');
     newProjectButton.addEventListener('click', () => {
         displayProjectModal();
@@ -49,42 +95,6 @@ const DOMcontrol = (() => {
         })
     }
 
-    const renderProjects = () => {
-        const projectsList = document.querySelector('#projects-list');
-
-        // provjera da li div vec ima listu. u tom slucaju obrisati sve, pa ponovo renderirati.
-
-        for (let i = 0; i < control.getProjectsArray().length; i++) {
-
-            const projectName = document.createElement('h3');
-            projectName.id = 'project-' + i;
-            projectName.className = 'project-name';
-            projectName.textContent = control.getProjectsArray()[i].name;
-
-            const editButton = document.createElement('button');
-            editButton.id = 'edit-' + i;
-            editButton.className = 'edit-project';
-            editButton.textContent = 'Edit';
-
-            const deleteButton = document.createElement('button');
-            deleteButton.id = 'delete-' + i;
-            deleteButton.className = 'delete-project';
-            deleteButton.textContent = 'Delete';
-
-            const projectTab = document.createElement('div');
-            projectTab.id = 'project-tab-' + i;
-            projectTab.className = 'project-tab';
-
-            projectTab.appendChild(projectName);
-            projectTab.appendChild(editButton);
-            projectTab.appendChild(deleteButton);
-
-            projectsList.appendChild(projectTab);
-        }
-
-    }
-
-    renderProjects(); // poziv na onloadu stranice
 })();
 
 export { DOMcontrol };

@@ -12,15 +12,15 @@ const control = (() => {
         const project = projectFactory(name);
         projects.push(project);
     };
-    const getProjectsArray = () => {
-        return projects;
-    };
     const deleteProject = (index) => {
         projects.splice(index, 1);
     };
     const editProject = (index, name) => {
         currentProject = projects[index];
         currentProjectIndex = index;
+    };
+    const getProjectsArray = () => {
+        return projects;
     };
     const getCurrentProject = () => {
         return currentProject;
