@@ -13,17 +13,16 @@ const DOMcontrol = (() => {
     })
 
     let newProjectNameInput = document.querySelector('#new-project-name-input');
-    let newProjectDescriptionInput = document.querySelector('#new-project-description-input');
     let modal = document.querySelector('#new-project-modal');
 
     const displayProjectModal = () => {
         modal.style.display = 'block';
+        newProjectNameInput.focus();
 
         let cancelButton = document.querySelector('.cancel-button');
         cancelButton.addEventListener('click', () => {
             modal.style.display = 'none';
             newProjectNameInput.value = '';
-            newProjectDescriptionInput.value = '';
         })
 
         window.addEventListener('click', (event) => {
@@ -36,18 +35,19 @@ const DOMcontrol = (() => {
     const addNewProject = () => {
         let addButton = document.querySelector('.modal-add-button');
         addButton.addEventListener('click', (event) => {
-            if (newProjectNameInput.value == '' || newProjectDescriptionInput.value == '') {
-                alert('Please enter all necessary information.');
+            if (newProjectNameInput.value == '') {
+                alert('Please enter project title.');
             } else {
-                control.addProject(newProjectNameInput.value, newProjectDescriptionInput.value);
+                control.addProject(newProjectNameInput.value);
                 control.changeCurrentProject(control.getProjectsArray().length - 1);
-                console.log(control.getCurrentProject());
-                console.log(control.getProjectsArray());
                 modal.style.display = 'none';
                 newProjectNameInput.value = '';
-                newProjectDescriptionInput.value = '';
             }
             event.stopImmediatePropagation();
         })
+    }
+
+    const renderProjects = () => {
+
     }
 })();

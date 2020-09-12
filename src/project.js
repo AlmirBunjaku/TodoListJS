@@ -6,13 +6,6 @@ const projectControl = {
         return this.name;
     },
 
-    setDescription() {
-        this.description = description;
-    },
-    getDescription() {
-        return this.description;
-    },
-
     addTodo(todo) {
         this.todos.push(todo);
     },
@@ -24,11 +17,10 @@ const projectControl = {
     }
 };
 
-const projectFactory = (name, description) => {
+const projectFactory = (name) => {
     let project = Object.create(projectControl);
 
     project.name = name;
-    project.description = description;
     project.todos = [];
 
     return project;

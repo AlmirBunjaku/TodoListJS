@@ -3,13 +3,13 @@ import { todoFactory } from './todo';
 import { noteFactory } from './note';
 
 const control = (() => {
-    const defaultProject = projectFactory('General', 'Default project');
+    const defaultProject = projectFactory('General');
     let projects = [defaultProject];
     let currentProject = false;
     let currentProjectIndex = null;
 
-    const addProject = (name, description) => {
-        const project = projectFactory(name, description);
+    const addProject = (name) => {
+        const project = projectFactory(name);
         projects.push(project);
     };
     const getProjectsArray = () => {
@@ -18,7 +18,7 @@ const control = (() => {
     const deleteProject = (index) => {
         projects.splice(index, 1);
     };
-    const editProject = (index, name, description) => {
+    const editProject = (index, name) => {
         currentProject = projects[index];
         currentProjectIndex = index;
     };
