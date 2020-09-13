@@ -18,6 +18,7 @@ const control = (() => {
     const editProject = (index, name) => {
         currentProject = projects[index];
         currentProjectIndex = index;
+        currentProject.name = name;
     };
     const getProjectsArray = () => {
         return projects;
