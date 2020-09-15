@@ -33,6 +33,10 @@ const DOMcontrol = (() => {
             const projectTab = document.createElement('div');
             projectTab.id = 'project-tab-' + i;
             projectTab.className = 'project-tab';
+            projectTab.addEventListener('click', () => {
+                control.changeCurrentProject(i);
+                renderTodos();
+            })
 
             projectTab.appendChild(projectName);
             projectTab.appendChild(editButton);
@@ -61,7 +65,107 @@ const DOMcontrol = (() => {
 
     }
 
+    const renderTodos = (index = control.getCurrentProjectIndex()) => {
+        const todoList = document.querySelector('#todo-list');
+
+        if (control.getProjectsArray().length == 0) {
+            console.log('No projects available.');
+            while (todoList.firstChild) {
+                todoList.removeChild(todoList.firstChild);
+            }
+        } else {
+            while (todoList.firstChild) {
+                todoList.removeChild(todoList.firstChild);
+            }
+
+            let currentProjectTodos = control.getCurrentProject().getTodos();
+            let currentProjectIndex = control.getCurrentProjectIndex();
+
+            if (currentProjectTodos.length == 0) {
+                console.log('No todos in this project.'); // convert this to UI element
+            } else {
+                for (let i = 0; i < currentProjectTodos.length; i++) {
+
+                    const todoName = document.createElement('h4');
+                    todoName.id = 'todo-' + currentProjectIndex + '-' + i;
+                    todoName.className = 'todo-name';
+                    todoName.textContent = currentProjectTodos[i].name;
+
+                    const todoDescription = document.createElement('p');
+                    todoDescription.id = 'todo-desc-' + currentProjectIndex + '-' + i;
+                    todoDescription.className = 'todo-description';
+                    todoDescription.textContent = currentProjectTodos[i].description;
+
+                    const notesButton = document.createElement('button');
+                    notesButton.id = 'notes-todo-' + currentProjectIndex + '-' + i;
+                    notesButton.className = 'notes-todo';
+                    notesButton.textContent = 'Notes';
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.id = 'delete-todo-' + i;
+                    deleteButton.className = 'delete-todo';
+                    deleteButton.textContent = 'X';
+
+                    const todoDueDate = document.createElement('p');
+                    todoDueDate.id = 'todo-due-date-' + currentProjectIndex + '-' + i;
+                    todoDueDate.className = 'todo-due-date';
+                    todoDueDate.textContent = currentProjectTodos[i].dueDate;
+
+                    const todoBlock = document.createElement('div');
+                    todoBlock.id = 'todo-block-' + i;
+                    todoBlock.className = 'todo-block';
+                    // event listener koji otvara prozor za edit todo
+
+                    todoBlock.appendChild(todoName);
+                    todoBlock.appendChild(todoDescription);
+                    todoBlock.appendChild(todoDueDate);
+                    todoBlock.appendChild(notesButton);
+                    todoBlock.appendChild(deleteButton);
+
+                    const todoPriority = currentProjectTodos[i].priority;
+                    if (todoPriority == 'high') {
+                        todoBlock.style.backgroundColor = 'red';
+                    } else if (todoPriority == 'medium') {
+                        todoBlock.style.backgroundColor = 'orange';
+                    } else {
+                        todoBlock.style.backgroundColor = 'yellow';
+                    }
+
+                    todoList.appendChild(todoBlock);
+                }
+            }
+
+            let deleteButtons = document.querySelectorAll('.delete-todo');
+            deleteButtons.forEach((deleteButton) => {
+                deleteButton.addEventListener('click', () => {
+                    control.deleteTodo(control.getCurrentProjectIndex(), deleteButton.id.split('-')[2]);
+                    renderProjects();
+                    renderTodos();
+                });
+            })
+
+            let editButtons = document.querySelectorAll('.edit-project');
+            editButtons.forEach((editButton) => {
+                editButton.addEventListener('click', () => {
+                    displayEditProjectModal();
+                    control.changeCurrentProject(editButton.id.split('-')[1]);
+                    confirmEditProject();
+                    renderProjects();
+                    renderTodos();
+                })
+            })
+        }
+
+
+
+    }
+
+
+    // ONLOAD FUNCTIONS
     renderProjects();
+    control.changeCurrentProject(0);
+    renderTodos();
+    // ONLOAD FUNCTIONS
 
     const newProjectButton = document.querySelector('#new-project-button');
     newProjectButton.addEventListener('click', () => {
@@ -102,6 +206,7 @@ const DOMcontrol = (() => {
             }
             event.stopImmediatePropagation();
             renderProjects();
+            renderTodos();
         })
     }
 

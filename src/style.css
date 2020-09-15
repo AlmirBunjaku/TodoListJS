@@ -43,6 +43,7 @@ header {
     justify-items: center;
     align-items: center;
     padding: 10px;
+    border-bottom: 1px solid grey;
 }
 
 .project-tab button {
@@ -59,6 +60,18 @@ header {
 #todo-list {
     min-height: 450px;
     background-color: wheat;
+    display: flex;
+    flex-direction: row;
+}
+
+.todo-block {
+    margin: 10px;
+    width: 150px;
+    height: 150px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 

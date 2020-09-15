@@ -1,10 +1,16 @@
-import { projectFactory } from './project';
+import { projectControl, projectFactory } from './project';
 import { todoFactory } from './todo';
 import { noteFactory } from './note';
 
 const control = (() => {
     const defaultProject = projectFactory('General');
     let projects = [defaultProject];
+
+    // test
+    projects[0].todos.push(todoFactory('naslov', 'opis', 'high', '2020-08-09'));
+    projects[0].todos.push(todoFactory('drugi', 'opis', 'low', '2020-08-09'));
+    // test
+
     let currentProject = false;
     let currentProjectIndex = null;
 
