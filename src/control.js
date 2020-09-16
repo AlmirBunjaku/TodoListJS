@@ -6,10 +6,14 @@ const control = (() => {
     const defaultProject = projectFactory('General');
     let projects = [defaultProject];
 
-    // test
+    // test data
     projects[0].todos.push(todoFactory('naslov', 'opis', 'high', '2020-08-09'));
     projects[0].todos.push(todoFactory('drugi', 'opis', 'low', '2020-08-09'));
-    // test
+    projects[0].todos[0].notes.push(noteFactory('1x1'));
+    projects[0].todos[0].notes.push(noteFactory('1x2'));
+    projects[0].todos[1].notes.push(noteFactory('2x1'));
+    projects[0].todos[1].notes.push(noteFactory('2x2'));
+    // test data
 
     let currentProject = false;
     let currentProjectIndex = null;

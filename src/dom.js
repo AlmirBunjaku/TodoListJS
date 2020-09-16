@@ -1,7 +1,7 @@
 import { control } from './control';
 import { projectControl } from './project';
 import { todoControl } from './todo';
-import { noteControl } from './note';
+import { noteControl, noteFactory } from './note';
 import { format } from 'date-fns';
 import { parseISO } from 'date-fns/parseISO';
 
@@ -132,6 +132,10 @@ const DOMcontrol = (() => {
                     }
 
                     todoList.appendChild(todoBlock);
+
+                    notesButton.addEventListener('click', () => {
+                        displayTodoNotes(notesButton.id.split('-')[3]);
+                    })
                 }
             }
 
@@ -142,17 +146,6 @@ const DOMcontrol = (() => {
                     renderProjects();
                     renderTodos();
                 });
-            })
-
-            let editButtons = document.querySelectorAll('.edit-project');
-            editButtons.forEach((editButton) => {
-                editButton.addEventListener('click', () => {
-                    displayEditProjectModal();
-                    control.changeCurrentProject(editButton.id.split('-')[1]);
-                    confirmEditProject();
-                    renderProjects();
-                    renderTodos();
-                })
             })
         }
 
@@ -166,6 +159,80 @@ const DOMcontrol = (() => {
     control.changeCurrentProject(0);
     renderTodos();
     // ONLOAD FUNCTIONS
+
+    const displayTodoNotes = (currentTodo) => {
+
+        let notesModal = document.querySelector('#todo-notes-modal');
+        let newNoteInput = document.querySelector('#new-note-input');
+
+        notesModal.style.display = 'block';
+        newNoteInput.focus();
+
+        let cancelButton = document.querySelector('.cancel-note-button');
+        cancelButton.addEventListener('click', () => {
+            notesModal.style.display = 'none';
+            newNoteInput.value = '';
+        })
+
+        window.addEventListener('click', (event) => {
+            if (event.target == notesModal) {
+                notesModal.style.display = 'none';
+            }
+        });
+        // end of modal display
+
+        // start of notes rendering
+
+        let notesList = document.querySelector('#notes-list');
+        let notesArray = control.getCurrentProject().getTodos()[currentTodo].notes;
+        console.log(notesArray);
+
+        const renderNotes = () => {
+
+            if (notesArray.length == 0) {
+                console.log('No notes for this todo.');
+                while (notesList.firstChild) {
+                    notesList.removeChild(notesList.firstChild);
+                }
+            } else {
+                while (notesList.firstChild) {
+                    notesList.removeChild(notesList.firstChild);
+                }
+
+                for (let i = 0; i < notesArray.length; i++) {
+                    let note = document.createElement('p');
+                    note.id = 'note-' + control.getCurrentProjectIndex() + '-' + currentTodo + '-' + i;
+                    note.className = 'note-text';
+                    note.textContent = notesArray[i].text;
+
+                    notesList.appendChild(note);
+                }
+            }
+        }
+
+        renderNotes();
+
+        const addNewNote = (currentTodo) => {
+            let addButton = document.querySelector('.modal-add-note-button');
+            addButton.addEventListener('click', (event) => {
+                if (newNoteInput.value == '') {
+                    alert('Please enter note text.');
+                } else {
+                    notesArray.push(noteFactory(newNoteInput.value));
+                    // postoji problem - ovaj push salje u prethodni todo ako se dodaje za vise to-do blokova naizmjenicno. Koristiti bind() ili .call().
+                    console.log(notesArray);
+                    renderNotes();
+                    newNoteInput.value = '';
+                }
+                event.stopImmediatePropagation();
+                // renderProjects();
+                // renderTodos();
+            })
+        }
+
+        addNewNote(currentTodo);
+
+    }
 
     const newProjectButton = document.querySelector('#new-project-button');
     newProjectButton.addEventListener('click', () => {
@@ -220,7 +287,6 @@ const DOMcontrol = (() => {
 
         let cancelEditButton = document.querySelector('.cancel-edit-button');
         cancelEditButton.addEventListener('click', () => {
-            console.log('radi'); // ne radi
             editModal.style.display = 'none';
             editProjectNameInput.value = '';
         })
