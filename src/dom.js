@@ -133,9 +133,6 @@ const DOMcontrol = (() => {
 
                     todoList.appendChild(todoBlock);
 
-                    notesButton.addEventListener('click', () => {
-                        displayTodoNotes(notesButton.id.split('-')[3]);
-                    })
                 }
             }
 
@@ -147,12 +144,24 @@ const DOMcontrol = (() => {
                     renderTodos();
                 });
             })
+
+            let notesButtons = document.querySelectorAll('.notes-todo');
+            notesButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    displayNotesModal();
+                    renderNotes(button.id.split('-')[3]);
+                    control.changeCurrentTodo(parseInt(button.id.split('-')[3]));
+
+                    let addButton = document.querySelector('.modal-add-note-button');
+                    addButton.addEventListener('click', (event) => {
+                        addNewNote();
+                        event.stopImmediatePropagation();
+                    })
+
+                })
+            })
         }
-
-
-
     }
-
 
     // ONLOAD FUNCTIONS
     renderProjects();
@@ -160,11 +169,10 @@ const DOMcontrol = (() => {
     renderTodos();
     // ONLOAD FUNCTIONS
 
-    const displayTodoNotes = (currentTodo) => {
+    let notesModal = document.querySelector('#todo-notes-modal');
+    let newNoteInput = document.querySelector('#new-note-input');
 
-        let notesModal = document.querySelector('#todo-notes-modal');
-        let newNoteInput = document.querySelector('#new-note-input');
-
+    const displayNotesModal = () => {
         notesModal.style.display = 'block';
         newNoteInput.focus();
 
@@ -178,61 +186,53 @@ const DOMcontrol = (() => {
             if (event.target == notesModal) {
                 notesModal.style.display = 'none';
             }
-        });
-        // end of modal display
+        })
+    }
 
-        // start of notes rendering
-
+    const renderNotes = (currentTodo) => {
         let notesList = document.querySelector('#notes-list');
         let notesArray = control.getCurrentProject().getTodos()[currentTodo].notes;
-        console.log(notesArray);
 
-        const renderNotes = () => {
+        if (notesArray.length == 0) {
+            console.log('No notes for this todo.');
+            while (notesList.firstChild) {
+                notesList.removeChild(notesList.firstChild);
+            }
+        } else {
+            while (notesList.firstChild) {
+                notesList.removeChild(notesList.firstChild);
+            }
 
-            if (notesArray.length == 0) {
-                console.log('No notes for this todo.');
-                while (notesList.firstChild) {
-                    notesList.removeChild(notesList.firstChild);
-                }
-            } else {
-                while (notesList.firstChild) {
-                    notesList.removeChild(notesList.firstChild);
-                }
+            for (let i = 0; i < notesArray.length; i++) {
+                let note = document.createElement('p');
+                note.id = 'note-' + control.getCurrentProjectIndex() + '-' + currentTodo + '-' + i;
+                note.className = 'note-text';
+                note.textContent = notesArray[i].text;
 
-                for (let i = 0; i < notesArray.length; i++) {
-                    let note = document.createElement('p');
-                    note.id = 'note-' + control.getCurrentProjectIndex() + '-' + currentTodo + '-' + i;
-                    note.className = 'note-text';
-                    note.textContent = notesArray[i].text;
+                notesList.appendChild(note);
 
-                    notesList.appendChild(note);
-                }
+                note.addEventListener('dblclick', () => {
+                    control.deleteNote(control.getCurrentProjectIndex(), currentTodo, i);
+                    renderNotes(currentTodo);
+                })
             }
         }
-
-        renderNotes();
-
-        const addNewNote = (currentTodo) => {
-            let addButton = document.querySelector('.modal-add-note-button');
-            addButton.addEventListener('click', (event) => {
-                if (newNoteInput.value == '') {
-                    alert('Please enter note text.');
-                } else {
-                    notesArray.push(noteFactory(newNoteInput.value));
-                    // postoji problem - ovaj push salje u prethodni todo ako se dodaje za vise to-do blokova naizmjenicno. Koristiti bind() ili .call().
-                    console.log(notesArray);
-                    renderNotes();
-                    newNoteInput.value = '';
-                }
-                event.stopImmediatePropagation();
-                // renderProjects();
-                // renderTodos();
-            })
-        }
-
-        addNewNote(currentTodo);
-
     }
+
+    const addNewNote = () => {
+        console.log(control.getCurrentProjectIndex(), control.getCurrentTodoIndex());
+        if (newNoteInput.value == '') {
+            alert('Please enter note text.');
+        } else {
+            control.addNote(control.getCurrentProjectIndex(), control.getCurrentTodoIndex(), newNoteInput.value);
+            renderNotes(control.getCurrentTodoIndex());
+            newNoteInput.value = '';
+        }
+        // renderProjects();
+        // renderTodos();
+    }
+
+
 
     const newProjectButton = document.querySelector('#new-project-button');
     newProjectButton.addEventListener('click', () => {

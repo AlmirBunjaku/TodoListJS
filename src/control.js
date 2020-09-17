@@ -4,7 +4,8 @@ import { noteFactory } from './note';
 
 const control = (() => {
     const defaultProject = projectFactory('General');
-    let projects = [defaultProject];
+    const testProject = projectFactory('Test');
+    let projects = [defaultProject, testProject];
 
     // test data
     projects[0].todos.push(todoFactory('naslov', 'opis', 'high', '2020-08-09'));
@@ -13,10 +14,18 @@ const control = (() => {
     projects[0].todos[0].notes.push(noteFactory('1x2'));
     projects[0].todos[1].notes.push(noteFactory('2x1'));
     projects[0].todos[1].notes.push(noteFactory('2x2'));
+    projects[1].todos.push(todoFactory('naslov', 'opis', 'low', '2020-08-09'));
+    projects[1].todos.push(todoFactory('drugi', 'opis', 'high', '2020-08-09'));
+    projects[1].todos[0].notes.push(noteFactory('1x1'));
+    projects[1].todos[0].notes.push(noteFactory('1x2'));
+    projects[1].todos[1].notes.push(noteFactory('2x1'));
+    projects[1].todos[1].notes.push(noteFactory('2x2'));
     // test data
 
     let currentProject = false;
     let currentProjectIndex = null;
+    let currentTodo = false;
+    let currentTodoIndex = null;
 
     const addProject = (name) => {
         const project = projectFactory(name);
@@ -62,9 +71,19 @@ const control = (() => {
         todo.setPriority(priority);
         todo.setDueDate(dueDate);
     };
+    const getCurrentTodo = () => {
+        return currentTodo;
+    };
+    const getCurrentTodoIndex = () => {
+        return currentTodoIndex;
+    };
+    const changeCurrentTodo = (index) => {
+        currentTodoIndex = index;
+    };
 
     const addNote = (projectIndex, todoIndex, text) => {
         const note = noteFactory(text);
+        console.log('Primljeni podaci (' + projectIndex + ',' + todoIndex + ',' + 'text' + ')');
         projects[projectIndex].getTodos()[todoIndex].addNote(note);
     };
     const deleteNote = (projectIndex, todoIndex, noteIndex) => {
@@ -90,6 +109,9 @@ const control = (() => {
         addTodo,
         deleteTodo,
         editTodo,
+        getCurrentTodo,
+        getCurrentTodoIndex,
+        changeCurrentTodo,
         addNote,
         deleteNote,
         editNote,
