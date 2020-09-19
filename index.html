@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List - AlmirBunjaku</title>
+    <title>To-do List - AlmirBunjaku</title>
     <script src="main.js" defer></script>
 </head>
 
 <body>
     <header>
-        <h1>Todo List - AlmirBunjaku</h1>
+        <h1>To-do List</h1>
     </header>
     <div id="wrapper">
         <div id="projects-container">
@@ -47,6 +47,62 @@
             <div class="modal-buttons">
                 <button class="cancel-edit-button">Cancel</button>
                 <button class="modal-confirm-button">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New todo modal -->
+    <div id="new-todo-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-heading">New task</h3>
+            <input type="text" id="new-todo-name-input" placeholder="Task name">
+            <input type="text" id="new-todo-description-input" placeholder="Task description">
+            <div id="priority-container">
+                <p>Priority</p>
+                <div id="priority-choices">
+                    <input type="radio" id="new-todo-priority-high" name="new-todo-priority-input" value="high">
+                    <label for="new-todo-priority-high">High</label><br>
+                    <input type="radio" id="new-todo-priority-medium" name="new-todo-priority-input" value="medium">
+                    <label for="new-todo-priority-medium">Medium</label><br>
+                    <input type="radio" id="new-todo-priority-low" name="new-todo-priority-input" value="low">
+                    <label for="new-todo-priority-low">Low</label>
+                </div>
+            </div>
+            <div id="dueDate-container">
+                <label for="new-todo-date-input">Due date:</label>
+                <input type="date" id="new-todo-date-input" name="new-todo-date-input">
+            </div>
+            <div class="modal-buttons">
+                <button class="cancel-new-todo-button">Cancel</button>
+                <button class="modal-add-todo-button">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit todo modal -->
+    <div id="edit-todo-modal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-heading">Edit task</h3>
+            <input type="text" id="edit-todo-name-input" placeholder="Task name">
+            <input type="text" id="edit-todo-description-input" placeholder="Task description">
+            <div id="priority-container">
+                <p>Priority</p>
+                <div id="priority-choices">
+                    <input type="radio" id="edit-todo-priority-high" name="edit-todo-priority-input" value="high">
+                    <label for="edit-todo-priority-high">High</label><br>
+                    <input type="radio" id="edit-todo-priority-medium" name="edit-todo-priority-input" value="medium">
+                    <label for="edit-todo-priority-medium">Medium</label><br>
+                    <input type="radio" id="edit-todo-priority-low" name="edit-todo-priority-input" value="low">
+                    <label for="edit-todo-priority-low">Low</label>
+                </div>
+            </div>
+            <div id="dueDate-container">
+                <label for="edit-todo-date-input">Due date:</label>
+                <input type="date" id="edit-todo-date-input" name="edit-todo-date-input">
+            </div>
+            <div class="modal-buttons">
+                <button class="cancel-edit-todo-button">Cancel</button>
+                <button class="modal-confirm-edit-todo-button">Add</button>
             </div>
         </div>
     </div>
