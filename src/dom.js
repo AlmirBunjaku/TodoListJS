@@ -40,26 +40,29 @@ const DOMcontrol = (() => {
 
             projectTab.appendChild(projectName);
             projectTab.appendChild(editButton);
-            projectTab.appendChild(deleteButton);
+            if (i != 0) {
+                projectTab.appendChild(deleteButton);
+            }
 
             projectsList.appendChild(projectTab);
         }
 
         let deleteButtons = document.querySelectorAll('.delete-project');
         deleteButtons.forEach((deleteButton) => {
-            deleteButton.addEventListener('click', () => {
+            deleteButton.addEventListener('click', (event) => {
                 control.deleteProject(deleteButton.id.split('-')[1]);
                 renderProjects();
+                renderTodos();
             });
         })
 
         let editButtons = document.querySelectorAll('.edit-project');
         editButtons.forEach((editButton) => {
-            editButton.addEventListener('click', () => {
-                displayEditProjectModal();
+            editButton.addEventListener('click', (event) => {
                 control.changeCurrentProject(editButton.id.split('-')[1]);
+                displayEditProjectModal();
                 confirmEditProject();
-                renderProjects();
+                event.stopImmediatePropagation();
             })
         })
 
@@ -68,98 +71,115 @@ const DOMcontrol = (() => {
     const renderTodos = (index = control.getCurrentProjectIndex()) => {
         const todoList = document.querySelector('#todo-list');
 
-        if (control.getProjectsArray().length == 0) {
-            console.log('No projects available.');
-            while (todoList.firstChild) {
-                todoList.removeChild(todoList.firstChild);
+        if (index >= control.getProjectsArray().length) {
+            if (control.getProjectsArray().length == 0) {
+                while (todoList.firstChild) {
+                    todoList.removeChild(todoList.firstChild);
+                }
+            } else {
+                control.changeCurrentProject(0);
+                renderTodos();
             }
         } else {
-            while (todoList.firstChild) {
-                todoList.removeChild(todoList.firstChild);
-            }
-
-            let currentProjectTodos = control.getCurrentProject().getTodos();
-            let currentProjectIndex = control.getCurrentProjectIndex();
-
-            if (currentProjectTodos.length == 0) {
-                console.log('No todos in this project.'); // convert this to UI element
-            } else {
-                for (let i = 0; i < currentProjectTodos.length; i++) {
-
-                    const todoName = document.createElement('h4');
-                    todoName.id = 'todo-' + currentProjectIndex + '-' + i;
-                    todoName.className = 'todo-name';
-                    todoName.textContent = currentProjectTodos[i].name;
-
-                    const todoDescription = document.createElement('p');
-                    todoDescription.id = 'todo-desc-' + currentProjectIndex + '-' + i;
-                    todoDescription.className = 'todo-description';
-                    todoDescription.textContent = currentProjectTodos[i].description;
-
-                    const notesButton = document.createElement('button');
-                    notesButton.id = 'notes-todo-' + currentProjectIndex + '-' + i;
-                    notesButton.className = 'notes-todo';
-                    notesButton.textContent = 'Notes';
-
-                    const deleteButton = document.createElement('button');
-                    deleteButton.id = 'delete-todo-' + i;
-                    deleteButton.className = 'delete-todo';
-                    deleteButton.textContent = 'X';
-
-                    const todoDueDate = document.createElement('p');
-                    todoDueDate.id = 'todo-due-date-' + currentProjectIndex + '-' + i;
-                    todoDueDate.className = 'todo-due-date';
-                    todoDueDate.textContent = currentProjectTodos[i].dueDate;
-
-                    const todoBlock = document.createElement('div');
-                    todoBlock.id = 'todo-block-' + i;
-                    todoBlock.className = 'todo-block';
-                    // event listener koji otvara prozor za edit todo
-
-                    todoBlock.appendChild(todoName);
-                    todoBlock.appendChild(todoDescription);
-                    todoBlock.appendChild(todoDueDate);
-                    todoBlock.appendChild(notesButton);
-                    todoBlock.appendChild(deleteButton);
-
-                    const todoPriority = currentProjectTodos[i].priority;
-                    if (todoPriority == 'high') {
-                        todoBlock.style.backgroundColor = 'red';
-                    } else if (todoPriority == 'medium') {
-                        todoBlock.style.backgroundColor = 'orange';
-                    } else {
-                        todoBlock.style.backgroundColor = 'yellow';
-                    }
-
-                    todoList.appendChild(todoBlock);
-
+            if (control.getProjectsArray().length == 0) {
+                console.log('No projects available.');
+                while (todoList.firstChild) {
+                    todoList.removeChild(todoList.firstChild);
                 }
-            }
+            } else {
+                while (todoList.firstChild) {
+                    todoList.removeChild(todoList.firstChild);
+                }
 
-            let deleteButtons = document.querySelectorAll('.delete-todo');
-            deleteButtons.forEach((deleteButton) => {
-                deleteButton.addEventListener('click', () => {
-                    control.deleteTodo(control.getCurrentProjectIndex(), deleteButton.id.split('-')[2]);
-                    renderProjects();
-                    renderTodos();
-                });
-            })
+                let currentProjectTodos = control.getCurrentProject().getTodos();
+                let currentProjectIndex = control.getCurrentProjectIndex();
 
-            let notesButtons = document.querySelectorAll('.notes-todo');
-            notesButtons.forEach((button) => {
-                button.addEventListener('click', () => {
-                    displayNotesModal();
-                    renderNotes(button.id.split('-')[3]);
-                    control.changeCurrentTodo(parseInt(button.id.split('-')[3]));
+                if (currentProjectTodos.length == 0) {
+                    console.log('No todos in this project.'); // convert this to UI element
+                } else {
+                    for (let i = 0; i < currentProjectTodos.length; i++) {
 
-                    let addButton = document.querySelector('.modal-add-note-button');
-                    addButton.addEventListener('click', (event) => {
-                        addNewNote();
+                        const todoName = document.createElement('h4');
+                        todoName.id = 'todo-' + currentProjectIndex + '-' + i;
+                        todoName.className = 'todo-name';
+                        todoName.textContent = currentProjectTodos[i].name;
+
+                        const todoDescription = document.createElement('p');
+                        todoDescription.id = 'todo-desc-' + currentProjectIndex + '-' + i;
+                        todoDescription.className = 'todo-description';
+                        todoDescription.textContent = currentProjectTodos[i].description;
+
+                        const notesButton = document.createElement('button');
+                        notesButton.id = 'notes-todo-' + currentProjectIndex + '-' + i;
+                        notesButton.className = 'notes-todo';
+                        notesButton.textContent = 'Notes';
+
+                        const deleteButton = document.createElement('button');
+                        deleteButton.id = 'delete-todo-' + i;
+                        deleteButton.className = 'delete-todo';
+                        deleteButton.textContent = 'X';
+
+                        const todoDueDate = document.createElement('p');
+                        todoDueDate.id = 'todo-due-date-' + currentProjectIndex + '-' + i;
+                        todoDueDate.className = 'todo-due-date';
+                        todoDueDate.textContent = currentProjectTodos[i].dueDate;
+
+                        const todoBlock = document.createElement('div');
+                        todoBlock.id = 'todo-block-' + i;
+                        todoBlock.className = 'todo-block';
+                        todoBlock.addEventListener('click', () => {
+                            control.changeCurrentTodo(i);
+                            displayEditTodoModal();
+                            confirmEditTodo();
+                        })
+
+                        todoBlock.appendChild(todoName);
+                        todoBlock.appendChild(todoDescription);
+                        todoBlock.appendChild(todoDueDate);
+                        todoBlock.appendChild(notesButton);
+                        todoBlock.appendChild(deleteButton);
+
+                        const todoPriority = currentProjectTodos[i].priority;
+                        if (todoPriority == 'high') {
+                            todoBlock.style.backgroundColor = 'red';
+                        } else if (todoPriority == 'medium') {
+                            todoBlock.style.backgroundColor = 'orange';
+                        } else {
+                            todoBlock.style.backgroundColor = 'yellow';
+                        }
+
+                        todoList.appendChild(todoBlock);
+
+                    }
+                }
+
+                let deleteButtons = document.querySelectorAll('.delete-todo');
+                deleteButtons.forEach((deleteButton) => {
+                    deleteButton.addEventListener('click', (event) => {
+                        control.deleteTodo(control.getCurrentProjectIndex(), deleteButton.id.split('-')[2]);
+                        renderProjects();
+                        renderTodos();
+                        event.stopImmediatePropagation();
+                    });
+                })
+
+                let notesButtons = document.querySelectorAll('.notes-todo');
+                notesButtons.forEach((button) => {
+                    button.addEventListener('click', (event) => {
+                        displayNotesModal();
+                        renderNotes(button.id.split('-')[3]);
+                        control.changeCurrentTodo(parseInt(button.id.split('-')[3]));
+
+                        let addButton = document.querySelector('.modal-add-note-button');
+                        addButton.addEventListener('click', (event) => {
+                            addNewNote();
+                            event.stopImmediatePropagation();
+                        })
+
                         event.stopImmediatePropagation();
                     })
-
                 })
-            })
+            }
         }
     }
 
@@ -220,7 +240,6 @@ const DOMcontrol = (() => {
     }
 
     const addNewNote = () => {
-        console.log(control.getCurrentProjectIndex(), control.getCurrentTodoIndex());
         if (newNoteInput.value == '') {
             alert('Please enter note text.');
         } else {
@@ -228,8 +247,6 @@ const DOMcontrol = (() => {
             renderNotes(control.getCurrentTodoIndex());
             newNoteInput.value = '';
         }
-        // renderProjects();
-        // renderTodos();
     }
 
 
@@ -241,21 +258,21 @@ const DOMcontrol = (() => {
     })
 
     let newProjectNameInput = document.querySelector('#new-project-name-input');
-    let modal = document.querySelector('#new-project-modal');
+    let newProjectModal = document.querySelector('#new-project-modal');
 
     const displayNewProjectModal = () => {
-        modal.style.display = 'block';
+        newProjectModal.style.display = 'block';
         newProjectNameInput.focus();
 
         let cancelButton = document.querySelector('.cancel-button');
         cancelButton.addEventListener('click', () => {
-            modal.style.display = 'none';
+            newProjectModal.style.display = 'none';
             newProjectNameInput.value = '';
         })
 
         window.addEventListener('click', (event) => {
-            if (event.target == modal) {
-                modal.style.display = 'none';
+            if (event.target == newProjectModal) {
+                newProjectModal.style.display = 'none';
             }
         });
     }
@@ -268,7 +285,7 @@ const DOMcontrol = (() => {
             } else {
                 control.addProject(newProjectNameInput.value);
                 control.changeCurrentProject(control.getProjectsArray().length - 1);
-                modal.style.display = 'none';
+                newProjectModal.style.display = 'none';
                 newProjectNameInput.value = '';
             }
             event.stopImmediatePropagation();
@@ -278,22 +295,23 @@ const DOMcontrol = (() => {
     }
 
     let editProjectNameInput = document.querySelector('#edit-project-name-input');
-    let editModal = document.querySelector('#edit-project-modal');
+    let editProjectModal = document.querySelector('#edit-project-modal');
 
     const displayEditProjectModal = () => {
 
-        editModal.style.display = 'block';
+        editProjectModal.style.display = 'block';
         editProjectNameInput.focus();
+        editProjectNameInput.value = control.getCurrentProject().name;
 
         let cancelEditButton = document.querySelector('.cancel-edit-button');
         cancelEditButton.addEventListener('click', () => {
-            editModal.style.display = 'none';
+            editProjectModal.style.display = 'none';
             editProjectNameInput.value = '';
         })
 
         window.addEventListener('click', (event) => {
-            if (event.target == editModal) {
-                editModal.style.display = 'none';
+            if (event.target == editProjectModal) {
+                editProjectModal.style.display = 'none';
             }
         });
     }
@@ -306,11 +324,125 @@ const DOMcontrol = (() => {
                 alert('Please enter new project title or cancel.');
             } else {
                 control.editProject(control.getCurrentProjectIndex(), editProjectNameInput.value);
-                editModal.style.display = 'none';
-                editProjectNameInput.value = '';
+                editProjectModal.style.display = 'none';
             }
             event.stopImmediatePropagation();
             renderProjects();
+        })
+    }
+
+    const newTodoButton = document.querySelector('#new-todo-button');
+    newTodoButton.addEventListener('click', () => {
+        displayNewTodoModal();
+        addNewTodo();
+    })
+
+    let newTodoNameInput = document.querySelector('#new-todo-name-input');
+    let newTodoDescriptionInput = document.querySelector('#new-todo-description-input');
+    let newTodoPriorityHigh = document.querySelector('#new-todo-priority-high');
+    let newTodoPriorityMedium = document.querySelector('#new-todo-priority-medium');
+    let newTodoPriorityLow = document.querySelector('#new-todo-priority-low');
+    let newTodoDueDateInput = document.querySelector('#new-todo-date-input');
+    let newTodoModal = document.querySelector('#new-todo-modal');
+
+    const displayNewTodoModal = () => {
+        newTodoModal.style.display = 'block';
+        newTodoNameInput.focus();
+
+        let cancelButton = document.querySelector('.cancel-new-todo-button');
+        cancelButton.addEventListener('click', () => {
+            newTodoModal.style.display = 'none';
+            newTodoNameInput.value = '';
+        })
+
+        window.addEventListener('click', (event) => {
+            if (event.target == newTodoModal) {
+                newTodoModal.style.display = 'none';
+            }
+        });
+    }
+
+    const addNewTodo = () => {
+        let addButton = document.querySelector('.modal-add-todo-button');
+        addButton.addEventListener('click', (event) => {
+            if (newTodoNameInput.value == '' || newTodoDescriptionInput.value == '' || (!newTodoPriorityHigh.checked && !newTodoPriorityMedium.checked && !newTodoPriorityLow.checked) || newTodoDueDateInput.value == '') {
+                alert('Please enter all necessary info.');
+            } else {
+                if (newTodoPriorityHigh.checked) {
+                    control.addTodo(control.getCurrentProjectIndex(), newTodoNameInput.value, newTodoDescriptionInput.value, newTodoPriorityHigh.value, newTodoDueDateInput.value);
+                } else if (newTodoPriorityMedium.checked) {
+                    control.addTodo(control.getCurrentProjectIndex(), newTodoNameInput.value, newTodoDescriptionInput.value, newTodoPriorityMedium.value, newTodoDueDateInput.value);
+                } else {
+                    control.addTodo(control.getCurrentProjectIndex(), newTodoNameInput.value, newTodoDescriptionInput.value, newTodoPriorityLow.value, newTodoDueDateInput.value);
+                }
+                newTodoModal.style.display = 'none';
+                newTodoNameInput.value = '';
+                newTodoDescriptionInput.value = '';
+                newTodoPriorityHigh.checked = 'false';
+                newTodoPriorityMedium.checked = 'false';
+                newTodoPriorityLow.checked = 'false';
+                newTodoDueDateInput.value = '';
+            }
+            event.stopImmediatePropagation();
+            renderProjects();
+            renderTodos();
+        })
+    }
+
+    let editTodoNameInput = document.querySelector('#edit-todo-name-input');
+    let editTodoDescriptionInput = document.querySelector('#edit-todo-description-input');
+    let editTodoPriorityHigh = document.querySelector('#edit-todo-priority-high');
+    let editTodoPriorityMedium = document.querySelector('#edit-todo-priority-medium');
+    let editTodoPriorityLow = document.querySelector('#edit-todo-priority-low');
+    let editTodoDueDateInput = document.querySelector('#edit-todo-date-input');
+    let editTodoModal = document.querySelector('#edit-todo-modal');
+
+    const displayEditTodoModal = () => {
+
+        editTodoModal.style.display = 'block';
+        editTodoNameInput.focus();
+        editTodoNameInput.value = control.getCurrentTodo().getName();
+        editTodoDescriptionInput.value = control.getCurrentTodo().getDescription();
+        editTodoDueDateInput.value = control.getCurrentTodo().getDueDate();
+        if (control.getCurrentTodo().getPriority() == 'high') {
+            editTodoPriorityHigh.checked = 'true';
+        } else if (control.getCurrentTodo().getPriority() == 'medium') {
+            editTodoPriorityMedium.checked = 'true';
+        } else {
+            editTodoPriorityLow.checked = 'true';
+        }
+
+        let cancelEditButton = document.querySelector('.cancel-edit-button');
+        cancelEditButton.addEventListener('click', () => {
+            editTodoModal.style.display = 'none';
+            editTodoNameInput.value = '';
+        })
+
+        window.addEventListener('click', (event) => {
+            if (event.target == editTodoModal) {
+                editTodoModal.style.display = 'none';
+            }
+        });
+    }
+
+    const confirmEditTodo = () => {
+
+        let confirmButton = document.querySelector('.modal-confirm-edit-todo-button');
+        confirmButton.addEventListener('click', (event) => {
+            if (editTodoNameInput.value == '' || editTodoDescriptionInput.value == '' || (!editTodoPriorityHigh.checked && !editTodoPriorityMedium.checked && !editTodoPriorityLow.checked) || editTodoDueDateInput.value == '') {
+                alert('Please enter new to-do information or cancel.');
+            } else {
+                if (editTodoPriorityHigh.checked) {
+                    control.editTodo(control.getCurrentProjectIndex(), control.getCurrentTodoIndex(), editTodoNameInput.value, editTodoDescriptionInput.value, editTodoPriorityHigh.value, editTodoDueDateInput.value);
+                } else if (editTodoPriorityMedium.checked) {
+                    control.editTodo(control.getCurrentProjectIndex(), control.getCurrentTodoIndex(), editTodoNameInput.value, editTodoDescriptionInput.value, editTodoPriorityMedium.value, editTodoDueDateInput.value);
+                } else {
+                    control.editTodo(control.getCurrentProjectIndex(), control.getCurrentTodoIndex(), editTodoNameInput.value, editTodoDescriptionInput.value, editTodoPriorityLow.value, editTodoDueDateInput.value);
+                }
+                editTodoModal.style.display = 'none';
+            }
+            event.stopImmediatePropagation();
+            renderTodos();
         })
     }
 
