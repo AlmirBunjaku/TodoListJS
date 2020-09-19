@@ -16,6 +16,7 @@ const control = (() => {
     projects[0].todos[1].notes.push(noteFactory('2x2'));
     projects[1].todos.push(todoFactory('naslov', 'opis', 'low', '2020-08-09'));
     projects[1].todos.push(todoFactory('drugi', 'opis', 'high', '2020-08-09'));
+    projects[1].todos.push(todoFactory('treci', 'opis', 'medium', '2020-08-09'));
     projects[1].todos[0].notes.push(noteFactory('1x1'));
     projects[1].todos[0].notes.push(noteFactory('1x2'));
     projects[1].todos[1].notes.push(noteFactory('2x1'));
@@ -77,22 +78,18 @@ const control = (() => {
     const getCurrentTodoIndex = () => {
         return currentTodoIndex;
     };
-    const changeCurrentTodo = (index) => {
-        currentTodoIndex = index;
+    const changeCurrentTodo = (todoIndex) => {
+        currentTodo = projects[getCurrentProjectIndex()].getTodos()[todoIndex];
+        currentTodoIndex = todoIndex;
     };
 
     const addNote = (projectIndex, todoIndex, text) => {
         const note = noteFactory(text);
-        console.log('Primljeni podaci (' + projectIndex + ',' + todoIndex + ',' + 'text' + ')');
         projects[projectIndex].getTodos()[todoIndex].addNote(note);
     };
     const deleteNote = (projectIndex, todoIndex, noteIndex) => {
         projects[projectIndex].getTodos()[todoIndex].deleteNote(noteIndex);
-    };
-    const editNote = (projectIndex, todoIndex, noteIndex, text) => {
-        const note = projects[projectIndex].getTodos()[todoIndex].getNotes()[noteIndex];
-        note.setText(text);
-    };
+    }
     const resetNotes = (projectIndex, todoIndex) => {
         projects[projectIndex].getTodos()[todoIndex].resetNotes();
     }
@@ -114,7 +111,6 @@ const control = (() => {
         changeCurrentTodo,
         addNote,
         deleteNote,
-        editNote,
         resetNotes
     };
 })();
