@@ -1,24 +1,27 @@
 import { control } from './control';
+import { format, parseISO } from 'date-fns';
 import { projectControl } from './project';
 import { todoControl } from './todo';
-import { noteControl, noteFactory } from './note';
-import { format } from 'date-fns';
-import { parseISO } from 'date-fns/parseISO';
 
 const DOMcontrol = (() => {
 
     const renderProjects = () => {
         const projectsList = document.querySelector('#projects-list');
+        const projects = control.getProjects();
         while (projectsList.firstChild) {
             projectsList.removeChild(projectsList.firstChild);
         }
 
-        for (let i = 0; i < control.getProjectsArray().length; i++) {
+        for (let i = 0; i < projects.length; i++) {
+
+            if (control.isStored()) {
+                Object.assign(projects[i], projectControl);
+            }
 
             const projectName = document.createElement('h3');
             projectName.id = 'project-' + i;
             projectName.className = 'project-name';
-            projectName.textContent = control.getProjectsArray()[i].name;
+            projectName.textContent = projects[i].name;
 
             const editButton = document.createElement('button');
             editButton.id = 'edit-' + i;
@@ -69,20 +72,25 @@ const DOMcontrol = (() => {
     }
 
     const renderTodos = (index = control.getCurrentProjectIndex()) => {
+
+        const projects = control.getProjects();
+
         const todoList = document.querySelector('#todo-list');
 
-        if (index >= control.getProjectsArray().length) {
-            if (control.getProjectsArray().length == 0) {
+        if (index >= projects.length) {
+            if (projects.length == 0) {
                 while (todoList.firstChild) {
                     todoList.removeChild(todoList.firstChild);
                 }
             } else {
                 control.changeCurrentProject(0);
+                Object.assign(control.getCurrentProject(), projectControl);
                 renderTodos();
             }
         } else {
-            if (control.getProjectsArray().length == 0) {
+            if (projects.length == 0) {
                 console.log('No projects available.');
+                Object.assign(control.getCurrentProject(), projectControl);
                 while (todoList.firstChild) {
                     todoList.removeChild(todoList.firstChild);
                 }
@@ -90,6 +98,7 @@ const DOMcontrol = (() => {
                 while (todoList.firstChild) {
                     todoList.removeChild(todoList.firstChild);
                 }
+                Object.assign(control.getCurrentProject(), projectControl);
 
                 let currentProjectTodos = control.getCurrentProject().getTodos();
                 let currentProjectIndex = control.getCurrentProjectIndex();
@@ -98,6 +107,7 @@ const DOMcontrol = (() => {
                     console.log('No todos in this project.'); // convert this to UI element
                 } else {
                     for (let i = 0; i < currentProjectTodos.length; i++) {
+                        Object.assign(currentProjectTodos[i], todoControl);
 
                         const todoName = document.createElement('h4');
                         todoName.id = 'todo-' + currentProjectIndex + '-' + i;
@@ -122,7 +132,7 @@ const DOMcontrol = (() => {
                         const todoDueDate = document.createElement('p');
                         todoDueDate.id = 'todo-due-date-' + currentProjectIndex + '-' + i;
                         todoDueDate.className = 'todo-due-date';
-                        todoDueDate.textContent = currentProjectTodos[i].dueDate;
+                        todoDueDate.textContent = format(parseISO(currentProjectTodos[i].dueDate), 'dd/MM/yyyy');
 
                         const todoBlock = document.createElement('div');
                         todoBlock.id = 'todo-block-' + i;
@@ -157,7 +167,6 @@ const DOMcontrol = (() => {
                 deleteButtons.forEach((deleteButton) => {
                     deleteButton.addEventListener('click', (event) => {
                         control.deleteTodo(control.getCurrentProjectIndex(), deleteButton.id.split('-')[2]);
-                        renderProjects();
                         renderTodos();
                         event.stopImmediatePropagation();
                     });
@@ -182,12 +191,6 @@ const DOMcontrol = (() => {
             }
         }
     }
-
-    // ONLOAD FUNCTIONS
-    renderProjects();
-    control.changeCurrentProject(0);
-    renderTodos();
-    // ONLOAD FUNCTIONS
 
     let notesModal = document.querySelector('#todo-notes-modal');
     let newNoteInput = document.querySelector('#new-note-input');
@@ -249,8 +252,6 @@ const DOMcontrol = (() => {
         }
     }
 
-
-
     const newProjectButton = document.querySelector('#new-project-button');
     newProjectButton.addEventListener('click', () => {
         displayNewProjectModal();
@@ -278,13 +279,14 @@ const DOMcontrol = (() => {
     }
 
     const addNewProject = () => {
+        const projects = control.getProjects();
         let addButton = document.querySelector('.modal-add-button');
         addButton.addEventListener('click', (event) => {
             if (newProjectNameInput.value == '') {
                 alert('Please enter project title.');
             } else {
                 control.addProject(newProjectNameInput.value);
-                control.changeCurrentProject(control.getProjectsArray().length - 1);
+                control.changeCurrentProject(projects.length - 1);
                 newProjectModal.style.display = 'none';
                 newProjectNameInput.value = '';
             }
@@ -440,10 +442,15 @@ const DOMcontrol = (() => {
                     control.editTodo(control.getCurrentProjectIndex(), control.getCurrentTodoIndex(), editTodoNameInput.value, editTodoDescriptionInput.value, editTodoPriorityLow.value, editTodoDueDateInput.value);
                 }
                 editTodoModal.style.display = 'none';
+                renderTodos();
             }
             event.stopImmediatePropagation();
-            renderTodos();
         })
+    }
+
+    return {
+        renderProjects,
+        renderTodos
     }
 
 })();
