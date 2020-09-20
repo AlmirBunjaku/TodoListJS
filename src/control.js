@@ -1,27 +1,11 @@
 import { projectControl, projectFactory } from './project';
-import { todoFactory } from './todo';
+import { todoControl, todoFactory } from './todo';
 import { noteFactory } from './note';
+import { storage } from './storage';
 
 const control = (() => {
     const defaultProject = projectFactory('General');
-    const testProject = projectFactory('Test');
-    let projects = [defaultProject, testProject];
-
-    // test data
-    projects[0].todos.push(todoFactory('naslov', 'opis', 'high', '2020-08-09'));
-    projects[0].todos.push(todoFactory('drugi', 'opis', 'low', '2020-08-09'));
-    projects[0].todos[0].notes.push(noteFactory('1x1'));
-    projects[0].todos[0].notes.push(noteFactory('1x2'));
-    projects[0].todos[1].notes.push(noteFactory('2x1'));
-    projects[0].todos[1].notes.push(noteFactory('2x2'));
-    projects[1].todos.push(todoFactory('naslov', 'opis', 'low', '2020-08-09'));
-    projects[1].todos.push(todoFactory('drugi', 'opis', 'high', '2020-08-09'));
-    projects[1].todos.push(todoFactory('treci', 'opis', 'medium', '2020-08-09'));
-    projects[1].todos[0].notes.push(noteFactory('1x1'));
-    projects[1].todos[0].notes.push(noteFactory('1x2'));
-    projects[1].todos[1].notes.push(noteFactory('2x1'));
-    projects[1].todos[1].notes.push(noteFactory('2x2'));
-    // test data
+    let projects = [defaultProject];
 
     let currentProject = false;
     let currentProjectIndex = null;
@@ -29,16 +13,21 @@ const control = (() => {
     let currentTodoIndex = null;
 
     const addProject = (name) => {
+        projects = storage.retrieveProjects();
         const project = projectFactory(name);
         projects.push(project);
+        storage.storeProjects();
     };
     const deleteProject = (index) => {
+        projects = storage.retrieveProjects();
         projects.splice(index, 1);
+        storage.storeProjects();
     };
     const editProject = (index, name) => {
         currentProject = projects[index];
         currentProjectIndex = index;
         currentProject.name = name;
+        storage.storeProjects();
     };
     const getProjectsArray = () => {
         return projects;
@@ -50,6 +39,7 @@ const control = (() => {
         return currentProjectIndex;
     };
     const changeCurrentProject = (index) => {
+        projects = storage.retrieveProjects();
         currentProject = projects[index];
         currentProjectIndex = index;
     };
@@ -57,20 +47,33 @@ const control = (() => {
         currentProject = false;
         currentProjectIndex = null;
     };
+    const isStored = () => {
+        return storage.getStored();
+    }
+    const getProjects = () => {
+        return storage.retrieveProjects();
+    }
 
     const addTodo = (projectIndex, name, description, priority, dueDate) => {
         const todo = todoFactory(name, description, priority, dueDate);
+        Object.assign(projects[projectIndex], projectControl);
         projects[projectIndex].addTodo(todo);
+        storage.storeProjects();
     };
     const deleteTodo = (projectIndex, todoIndex) => {
+        Object.assign(projects[projectIndex], projectControl);
         projects[projectIndex].deleteTodo(todoIndex);
+        storage.storeProjects();
     };
     const editTodo = (projectIndex, todoIndex, name, description, priority, dueDate) => {
+        Object.assign(projects[projectIndex], projectControl);
         const todo = projects[projectIndex].getTodos()[todoIndex];
+        Object.assign(todo, todoControl);
         todo.setName(name);
         todo.setDescription(description);
         todo.setPriority(priority);
         todo.setDueDate(dueDate);
+        storage.storeProjects();
     };
     const getCurrentTodo = () => {
         return currentTodo;
@@ -86,9 +89,11 @@ const control = (() => {
     const addNote = (projectIndex, todoIndex, text) => {
         const note = noteFactory(text);
         projects[projectIndex].getTodos()[todoIndex].addNote(note);
+        storage.storeProjects();
     };
     const deleteNote = (projectIndex, todoIndex, noteIndex) => {
         projects[projectIndex].getTodos()[todoIndex].deleteNote(noteIndex);
+        storage.storeProjects();
     }
     const resetNotes = (projectIndex, todoIndex) => {
         projects[projectIndex].getTodos()[todoIndex].resetNotes();
@@ -103,6 +108,8 @@ const control = (() => {
         getCurrentProjectIndex,
         changeCurrentProject,
         resetCurrentProject,
+        isStored,
+        getProjects,
         addTodo,
         deleteTodo,
         editTodo,
