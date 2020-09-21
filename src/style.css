@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Roboto, sans-serif;
+    cursor: default;
 }
 
 input {
@@ -14,13 +16,22 @@ input::placeholder {
     color: black;
 }
 
+input:hover {
+    cursor: auto;
+}
+
 button {
     outline: none;
 }
 
 header {
     text-align: center;
+    letter-spacing: 0.1rem;
     padding: 30px;
+    color: white;
+    background: rgb(33, 150, 243);
+    background: linear-gradient(180deg, rgba(33, 150, 243, 1) 0%, rgba(30, 136, 229, 1) 100%);
+    border-bottom: 1px solid hsl(216, 85%, 34%);
 }
 
 #wrapper {
@@ -31,46 +42,136 @@ header {
 
 #projects-container {
     display: grid;
-    grid-template-rows: 1fr 50px;
+    grid-template-rows: 50px 1fr 50px;
+    justify-items: center;
+    background-color: hsl(0, 0%, 98%);
+    border-right: 1px solid hsl(216, 85%, 34%);
+}
+
+#projects-header {
+    text-align: center;
+    color: hsl(207, 90%, 61%);
+    font-weight: 300;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #projects-list {
-    min-height: 450px;
-    max-height: 450px;
-    background-color: lightgrey;
+    min-height: 400px;
+    max-height: 400px;
+    background-color: hsl(0, 0%, 98%);
     overflow-y: auto;
 }
 
 .project-tab {
     display: grid;
-    grid-template-columns: 200px 30px 30px;
+    grid-template-columns: 200px 30px 45px;
     grid-template-rows: 30px;
     justify-items: center;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px dotted hsl(205, 87%, 94%);
+    transition: background-color 1s;
+}
+
+.project-tab:hover {
+    cursor: pointer;
+    background-color: hsl(205, 100%, 98%);
+}
+
+.project-tab h3 {
+    color: hsl(216, 85%, 34%);
+    width: 200px;
+    font-weight: 400;
+    padding: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.project-tab h3:hover {
+    cursor: pointer;
 }
 
 .project-tab button {
     width: 25px;
     height: 25px;
+    border-radius: 100%;
+    border: none;
+    font-size: larger;
+}
+
+.edit-project {
+    background-color: hsl(199, 94%, 94%);
+    color: hsl(207, 90%, 54%);
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.edit-project:hover {
+    background-color: hsl(207, 90%, 54%);
+    color: white;
+    cursor: pointer;
+}
+
+.delete-project {
+    background-color: hsl(351, 100%, 96%);
+    color: hsl(340, 82%, 52%);
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.delete-project:hover {
+    background-color: hsl(340, 82%, 52%);
+    color: white;
+    cursor: pointer;
+}
+
+#new-project-button {
+    border: none;
+    width: fit-content;
+    height: fit-content;
+    padding: 15px;
+    border-radius: 15px;
+    background-color: hsl(205, 87%, 94%);
+    color: hsl(210, 79%, 46%);
+    transition: background-color 0.5s, color 0.5s;
+}
+
+#new-project-button:hover {
+    cursor: pointer;
+    background-color: hsl(207, 90%, 54%);
+    color: white;
 }
 
 #todo-container {
     display: grid;
-    grid-template-rows: 1fr 50px;
+    grid-template-rows: 50px 1fr 50px;
+    grid-template-columns: 1fr;
+    justify-items: center;
     overflow: auto;
+    background-color: hsl(204, 15%, 94%);
+}
+
+#todo-header {
+    text-align: center;
+    color: hsl(207, 90%, 61%);
+    font-weight: 300;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #todo-list {
-    min-height: 450px;
-    background-color: wheat;
+    min-height: 400px;
+    min-width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .todo-block {
+    background-color: hsl(0, 0%, 98%);
     margin: 10px;
     width: 150px;
     height: 150px;
@@ -78,6 +179,25 @@ header {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#new-todo-button {
+    border: none;
+    width: fit-content;
+    height: fit-content;
+    padding: 15px;
+    border-radius: 15px;
+    background-color: hsl(205, 87%, 94%);
+    color: hsl(210, 79%, 46%);
+    transition: background-color 0.5s, color 0.5s;
+}
+
+#new-todo-button:hover {
+    cursor: pointer;
+    background-color: hsl(207, 90%, 54%);
+    color: white;
 }
 
 

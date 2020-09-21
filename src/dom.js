@@ -1,9 +1,13 @@
 import { control } from './control';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, startOfToday } from 'date-fns';
 import { projectControl } from './project';
 import { todoControl } from './todo';
 
 const DOMcontrol = (() => {
+
+    const dateMinimum = () => {
+        return format(startOfToday(), 'yyyy-MM-dd');
+    }
 
     const renderProjects = () => {
         const projectsList = document.querySelector('#projects-list');
@@ -26,12 +30,12 @@ const DOMcontrol = (() => {
             const editButton = document.createElement('button');
             editButton.id = 'edit-' + i;
             editButton.className = 'edit-project';
-            editButton.textContent = '/';
+            editButton.textContent = '⇃';
 
             const deleteButton = document.createElement('button');
             deleteButton.id = 'delete-' + i;
             deleteButton.className = 'delete-project';
-            deleteButton.textContent = 'X';
+            deleteButton.textContent = '×';
 
             const projectTab = document.createElement('div');
             projectTab.id = 'project-tab-' + i;
@@ -151,11 +155,11 @@ const DOMcontrol = (() => {
 
                         const todoPriority = currentProjectTodos[i].priority;
                         if (todoPriority == 'high') {
-                            todoBlock.style.backgroundColor = 'red';
+                            todoBlock.style.borderBottom = '7px solid hsl(0, 100%, 42%)';
                         } else if (todoPriority == 'medium') {
-                            todoBlock.style.backgroundColor = 'orange';
+                            todoBlock.style.borderBottom = '7px solid hsl(36, 100%, 57%)';
                         } else {
-                            todoBlock.style.backgroundColor = 'yellow';
+                            todoBlock.style.borderBottom = '7px solid hsl(55, 100%, 50%)';
                         }
 
                         todoList.appendChild(todoBlock);
@@ -345,6 +349,7 @@ const DOMcontrol = (() => {
     let newTodoPriorityMedium = document.querySelector('#new-todo-priority-medium');
     let newTodoPriorityLow = document.querySelector('#new-todo-priority-low');
     let newTodoDueDateInput = document.querySelector('#new-todo-date-input');
+    newTodoDueDateInput.min = dateMinimum();
     let newTodoModal = document.querySelector('#new-todo-modal');
 
     const displayNewTodoModal = () => {
@@ -355,6 +360,12 @@ const DOMcontrol = (() => {
         cancelButton.addEventListener('click', () => {
             newTodoModal.style.display = 'none';
             newTodoNameInput.value = '';
+            newTodoNameInput.value = '';
+            newTodoDescriptionInput.value = '';
+            newTodoPriorityHigh.checked = 'false';
+            newTodoPriorityMedium.checked = 'false';
+            newTodoPriorityLow.checked = 'false';
+            newTodoDueDateInput.value = '';
         })
 
         window.addEventListener('click', (event) => {
@@ -397,6 +408,7 @@ const DOMcontrol = (() => {
     let editTodoPriorityMedium = document.querySelector('#edit-todo-priority-medium');
     let editTodoPriorityLow = document.querySelector('#edit-todo-priority-low');
     let editTodoDueDateInput = document.querySelector('#edit-todo-date-input');
+    editTodoDueDateInput.min = dateMinimum();
     let editTodoModal = document.querySelector('#edit-todo-modal');
 
     const displayEditTodoModal = () => {
@@ -414,10 +426,9 @@ const DOMcontrol = (() => {
             editTodoPriorityLow.checked = 'true';
         }
 
-        let cancelEditButton = document.querySelector('.cancel-edit-button');
+        let cancelEditButton = document.querySelector('.cancel-edit-todo-button');
         cancelEditButton.addEventListener('click', () => {
             editTodoModal.style.display = 'none';
-            editTodoNameInput.value = '';
         })
 
         window.addEventListener('click', (event) => {
