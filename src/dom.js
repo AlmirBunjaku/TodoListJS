@@ -155,11 +155,14 @@ const DOMcontrol = (() => {
 
                         const todoPriority = currentProjectTodos[i].priority;
                         if (todoPriority == 'high') {
-                            todoBlock.style.borderBottom = '7px solid hsl(0, 100%, 42%)';
+                            todoBlock.style.border = '1px solid hsl(0, 100%, 42%)';
+                            todoBlock.style.borderBottom = '5px solid hsl(0, 100%, 42%)';
                         } else if (todoPriority == 'medium') {
-                            todoBlock.style.borderBottom = '7px solid hsl(36, 100%, 57%)';
+                            todoBlock.style.border = '1px solid hsl(36, 100%, 57%)';
+                            todoBlock.style.borderBottom = '5px solid hsl(36, 100%, 57%)';
                         } else {
-                            todoBlock.style.borderBottom = '7px solid hsl(55, 100%, 50%)';
+                            todoBlock.style.border = '1px solid hsl(55, 100%, 50%)';
+                            todoBlock.style.borderBottom = '5px solid hsl(55, 100%, 50%)';
                         }
 
                         todoList.appendChild(todoBlock);

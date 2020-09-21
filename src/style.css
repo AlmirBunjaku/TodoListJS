@@ -190,6 +190,7 @@ header {
     width: fit-content;
     height: fit-content;
     padding: 15px;
+    border: 1px solid hsl(210, 79%, 46%);
     border-radius: 15px;
     background-color: hsl(205, 87%, 94%);
     color: hsl(210, 79%, 46%);
