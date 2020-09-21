@@ -66,18 +66,18 @@ header {
 
 .project-tab {
     display: grid;
-    grid-template-columns: 200px 30px 45px;
+    grid-template-columns: 200px 30px 30px;
     grid-template-rows: 30px;
     justify-items: center;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px dotted hsl(205, 87%, 94%);
-    transition: background-color 1s;
+    border-bottom: 1px dotted hsl(207, 90%, 74%);
+    transition: border 1s;
 }
 
 .project-tab:hover {
     cursor: pointer;
-    background-color: hsl(205, 100%, 98%);
+    border-bottom-style: solid;
 }
 
 .project-tab h3 {
@@ -98,13 +98,13 @@ header {
     width: 25px;
     height: 25px;
     border-radius: 100%;
-    border: none;
     font-size: larger;
 }
 
 .edit-project {
     background-color: hsl(199, 94%, 94%);
     color: hsl(207, 90%, 54%);
+    border: 1px solid hsl(207, 90%, 54%);
     transition: background-color 0.5s, color 0.5s;
 }
 
@@ -117,6 +117,7 @@ header {
 .delete-project {
     background-color: hsl(351, 100%, 96%);
     color: hsl(340, 82%, 52%);
+    border: 1px solid hsl(340, 82%, 52%);
     transition: background-color 0.5s, color 0.5s;
 }
 
@@ -131,6 +132,7 @@ header {
     width: fit-content;
     height: fit-content;
     padding: 15px;
+    border: 1px solid hsl(210, 79%, 46%);
     border-radius: 15px;
     background-color: hsl(205, 87%, 94%);
     color: hsl(210, 79%, 46%);
@@ -167,7 +169,7 @@ header {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
+    padding: 10px;
 }
 
 .todo-block {
