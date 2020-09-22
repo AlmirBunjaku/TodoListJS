@@ -85,6 +85,14 @@ const control = (() => {
         currentTodo = projects[getCurrentProjectIndex()].getTodos()[todoIndex];
         currentTodoIndex = todoIndex;
     };
+    const changeTodoStatus = (projectIndex, todoIndex) => {
+        Object.assign(projects[projectIndex], projectControl);
+        projects[projectIndex].getTodos()[todoIndex].changeStatus();
+        storage.storeProjects();
+    };
+    const getTodoStatus = () => {
+        return currentTodo.status;
+    };
 
     const addNote = (projectIndex, todoIndex, text) => {
         const note = noteFactory(text);
@@ -116,6 +124,8 @@ const control = (() => {
         getCurrentTodo,
         getCurrentTodoIndex,
         changeCurrentTodo,
+        changeTodoStatus,
+        getTodoStatus,
         addNote,
         deleteNote,
         resetNotes

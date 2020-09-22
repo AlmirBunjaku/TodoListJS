@@ -39,6 +39,17 @@ const todoControl = {
     getNotes() {
         return this.notes;
     },
+
+    changeStatus() {
+        if (this.status == false) {
+            this.status = true;
+        } else {
+            this.status = false;
+        }
+    },
+    getStatus() {
+        return this.status;
+    }
 };
 
 const todoFactory = (name, description, priority, dueDate) => {
@@ -49,6 +60,7 @@ const todoFactory = (name, description, priority, dueDate) => {
     todo.priority = priority;
     todo.dueDate = dueDate;
     todo.notes = [];
+    todo.status = false;
 
     return todo;
 };

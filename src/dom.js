@@ -128,6 +128,15 @@ const DOMcontrol = (() => {
                         notesButton.className = 'notes-todo';
                         notesButton.textContent = 'Notes';
 
+                        const statusButton = document.createElement('button');
+                        statusButton.id = 'status-todo-' + currentProjectIndex + '-' + i;
+                        statusButton.className = 'status-todo';
+                        if (currentProjectTodos[i].status == false) {
+                            statusButton.textContent = 'Check';
+                        } else {
+                            statusButton.textContent = 'Uncheck';
+                        }
+
                         const deleteButton = document.createElement('button');
                         deleteButton.id = 'delete-todo-' + i;
                         deleteButton.className = 'delete-todo';
@@ -151,6 +160,7 @@ const DOMcontrol = (() => {
                         todoBlock.appendChild(todoDescription);
                         todoBlock.appendChild(todoDueDate);
                         todoBlock.appendChild(notesButton);
+                        todoBlock.appendChild(statusButton);
                         todoBlock.appendChild(deleteButton);
 
                         const todoPriority = currentProjectTodos[i].priority;
@@ -163,6 +173,15 @@ const DOMcontrol = (() => {
                         } else {
                             todoBlock.style.border = '1px solid hsl(55, 100%, 50%)';
                             todoBlock.style.borderBottom = '5px solid hsl(55, 100%, 50%)';
+                        }
+
+                        const todoStatus = currentProjectTodos[i].status;
+                        if (todoStatus == true) {
+                            todoName.style.textDecoration = 'line-through';
+                            todoDescription.style.textDecoration = 'line-through';
+                        } else {
+                            todoName.style.textDecoration = 'none';
+                            todoDescription.style.textDecoration = 'none';
                         }
 
                         todoList.appendChild(todoBlock);
@@ -194,6 +213,15 @@ const DOMcontrol = (() => {
 
                         event.stopImmediatePropagation();
                     })
+                })
+
+                let statusButtons = document.querySelectorAll('.status-todo');
+                statusButtons.forEach((statusButton) => {
+                    statusButton.addEventListener('click', (event) => {
+                        control.changeTodoStatus(control.getCurrentProjectIndex(), statusButton.id.split('-')[3]);
+                        renderTodos();
+                        event.stopImmediatePropagation();
+                    });
                 })
             }
         }
