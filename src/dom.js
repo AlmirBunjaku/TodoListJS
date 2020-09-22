@@ -26,11 +26,12 @@ const DOMcontrol = (() => {
             projectName.id = 'project-' + i;
             projectName.className = 'project-name';
             projectName.textContent = projects[i].name;
+            projectName.title = projects[i].name;
 
             const editButton = document.createElement('button');
             editButton.id = 'edit-' + i;
             editButton.className = 'edit-project';
-            editButton.textContent = '⇃';
+            editButton.textContent = '↡';
 
             const deleteButton = document.createElement('button');
             deleteButton.id = 'delete-' + i;
@@ -117,35 +118,37 @@ const DOMcontrol = (() => {
                         todoName.id = 'todo-' + currentProjectIndex + '-' + i;
                         todoName.className = 'todo-name';
                         todoName.textContent = currentProjectTodos[i].name;
+                        todoName.title = currentProjectTodos[i].name;
 
                         const todoDescription = document.createElement('p');
                         todoDescription.id = 'todo-desc-' + currentProjectIndex + '-' + i;
                         todoDescription.className = 'todo-description';
                         todoDescription.textContent = currentProjectTodos[i].description;
+                        todoDescription.title = currentProjectTodos[i].description;
 
                         const notesButton = document.createElement('button');
                         notesButton.id = 'notes-todo-' + currentProjectIndex + '-' + i;
                         notesButton.className = 'notes-todo';
-                        notesButton.textContent = 'Notes';
+                        notesButton.textContent = '▤';
 
                         const statusButton = document.createElement('button');
                         statusButton.id = 'status-todo-' + currentProjectIndex + '-' + i;
                         statusButton.className = 'status-todo';
-                        if (currentProjectTodos[i].status == false) {
-                            statusButton.textContent = 'Check';
-                        } else {
-                            statusButton.textContent = 'Uncheck';
-                        }
+                        statusButton.textContent = '✓';
 
                         const deleteButton = document.createElement('button');
                         deleteButton.id = 'delete-todo-' + i;
                         deleteButton.className = 'delete-todo';
-                        deleteButton.textContent = 'X';
+                        deleteButton.textContent = '×';
 
                         const todoDueDate = document.createElement('p');
                         todoDueDate.id = 'todo-due-date-' + currentProjectIndex + '-' + i;
                         todoDueDate.className = 'todo-due-date';
                         todoDueDate.textContent = format(parseISO(currentProjectTodos[i].dueDate), 'dd/MM/yyyy');
+
+                        const buttonContainer = document.createElement('div');
+                        buttonContainer.id = 'buttons-todo-' + currentProjectIndex + '-' + i;
+                        buttonContainer.className = 'buttons-todo';
 
                         const todoBlock = document.createElement('div');
                         todoBlock.id = 'todo-block-' + i;
@@ -156,12 +159,14 @@ const DOMcontrol = (() => {
                             confirmEditTodo();
                         })
 
+                        buttonContainer.appendChild(notesButton);
+                        buttonContainer.appendChild(statusButton);
+                        buttonContainer.appendChild(deleteButton);
+
                         todoBlock.appendChild(todoName);
                         todoBlock.appendChild(todoDescription);
                         todoBlock.appendChild(todoDueDate);
-                        todoBlock.appendChild(notesButton);
-                        todoBlock.appendChild(statusButton);
-                        todoBlock.appendChild(deleteButton);
+                        todoBlock.appendChild(buttonContainer);
 
                         const todoPriority = currentProjectTodos[i].priority;
                         if (todoPriority == 'high') {
@@ -231,7 +236,7 @@ const DOMcontrol = (() => {
     let newNoteInput = document.querySelector('#new-note-input');
 
     const displayNotesModal = () => {
-        notesModal.style.display = 'block';
+        notesModal.style.display = 'flex';
         newNoteInput.focus();
 
         let cancelButton = document.querySelector('.cancel-note-button');
@@ -297,7 +302,7 @@ const DOMcontrol = (() => {
     let newProjectModal = document.querySelector('#new-project-modal');
 
     const displayNewProjectModal = () => {
-        newProjectModal.style.display = 'block';
+        newProjectModal.style.display = 'flex';
         newProjectNameInput.focus();
 
         let cancelButton = document.querySelector('.cancel-button');
@@ -336,7 +341,7 @@ const DOMcontrol = (() => {
 
     const displayEditProjectModal = () => {
 
-        editProjectModal.style.display = 'block';
+        editProjectModal.style.display = 'flex';
         editProjectNameInput.focus();
         editProjectNameInput.value = control.getCurrentProject().name;
 
@@ -384,7 +389,7 @@ const DOMcontrol = (() => {
     let newTodoModal = document.querySelector('#new-todo-modal');
 
     const displayNewTodoModal = () => {
-        newTodoModal.style.display = 'block';
+        newTodoModal.style.display = 'flex';
         newTodoNameInput.focus();
 
         let cancelButton = document.querySelector('.cancel-new-todo-button');
@@ -444,7 +449,7 @@ const DOMcontrol = (() => {
 
     const displayEditTodoModal = () => {
 
-        editTodoModal.style.display = 'block';
+        editTodoModal.style.display = 'flex';
         editTodoNameInput.focus();
         editTodoNameInput.value = control.getCurrentTodo().getName();
         editTodoDescriptionInput.value = control.getCurrentTodo().getDescription();

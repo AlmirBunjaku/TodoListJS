@@ -24,6 +24,12 @@ button {
     outline: none;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 header {
     text-align: center;
     letter-spacing: 0.1rem;
@@ -36,7 +42,6 @@ header {
 
 #wrapper {
     display: grid;
-    grid-template-rows: 1fr;
     grid-template-columns: 300px 1fr;
 }
 
@@ -59,8 +64,7 @@ header {
 }
 
 #projects-list {
-    min-height: 400px;
-    max-height: 400px;
+    height: 400px;
     background-color: hsl(0, 0%, 98%);
     overflow-y: auto;
 }
@@ -96,9 +100,12 @@ header {
 }
 
 .project-tab button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 25px;
     height: 25px;
-    border-radius: 100%;
+    border-radius: none;
     font-size: larger;
 }
 
@@ -134,7 +141,7 @@ header {
     height: fit-content;
     padding: 15px;
     border: 1px solid hsl(210, 79%, 46%);
-    border-radius: 15px;
+    border-radius: none;
     background-color: hsl(205, 87%, 94%);
     color: hsl(210, 79%, 46%);
     transition: background-color 0.5s, color 0.5s;
@@ -151,7 +158,6 @@ header {
     grid-template-rows: 50px 1fr 50px;
     grid-template-columns: 1fr;
     justify-items: center;
-    overflow: auto;
     background-color: hsl(204, 15%, 94%);
 }
 
@@ -165,12 +171,13 @@ header {
 }
 
 #todo-list {
-    min-height: 400px;
+    height: 400px;
     min-width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     padding: 10px;
+    overflow-y: auto;
 }
 
 .todo-block {
@@ -181,7 +188,86 @@ header {
     padding: 10px;
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.buttons-todo {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.todo-block button {
+    display: flex;
     justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    border-radius: none;
+    font-size: larger;
+}
+
+.todo-block h4 {
+    width: 100%;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.todo-description {
+    color: hsl(199, 18%, 33%);
+    text-align: center;
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.todo-due-date {
+    text-align: center;
+    color: hsl(199, 18%, 33%);
+    width: 100%;
+}
+
+.notes-todo {
+    background-color: hsl(199, 94%, 94%);
+    color: hsl(207, 90%, 54%);
+    border: 1px solid hsl(207, 90%, 54%);
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.notes-todo:hover {
+    background-color: hsl(207, 90%, 54%);
+    color: white;
+    cursor: pointer;
+}
+
+.status-todo {
+    background-color: hsl(125, 39%, 94%);
+    color: hsl(122, 39%, 49%);
+    border: 1px solid hsl(122, 39%, 49%);
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.status-todo:hover {
+    background-color: hsl(122, 39%, 49%);
+    color: white;
+    cursor: pointer;
+}
+
+.delete-todo {
+    background-color: hsl(351, 100%, 96%);
+    color: hsl(340, 82%, 52%);
+    border: 1px solid hsl(340, 82%, 52%);
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.delete-todo:hover {
+    background-color: hsl(340, 82%, 52%);
+    color: white;
+    cursor: pointer;
 }
 
 #new-todo-button {
@@ -190,7 +276,7 @@ header {
     height: fit-content;
     padding: 15px;
     border: 1px solid hsl(210, 79%, 46%);
-    border-radius: 15px;
+    border-radius: none;
     background-color: hsl(205, 87%, 94%);
     color: hsl(210, 79%, 46%);
     transition: background-color 0.5s, color 0.5s;
@@ -215,12 +301,13 @@ header {
     height: 100%;
     overflow: auto;
     background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto 0% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 350px;
