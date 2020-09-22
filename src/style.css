@@ -43,6 +43,7 @@ header {
 #projects-container {
     display: grid;
     grid-template-rows: 50px 1fr 50px;
+    row-gap: 20px;
     justify-items: center;
     background-color: hsl(0, 0%, 98%);
     border-right: 1px solid hsl(216, 85%, 34%);
@@ -181,8 +182,6 @@ header {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
 }
 
 #new-todo-button {
