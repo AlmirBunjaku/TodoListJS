@@ -37,7 +37,7 @@ header {
     color: white;
     background: rgb(33, 150, 243);
     background: linear-gradient(180deg, rgba(33, 150, 243, 1) 0%, rgba(30, 136, 229, 1) 100%);
-    border-bottom: 1px solid hsl(216, 85%, 34%);
+    border-bottom: 1px solid hsl(206, 99%, 31%);
 }
 
 #wrapper {
@@ -51,12 +51,12 @@ header {
     row-gap: 20px;
     justify-items: center;
     background-color: hsl(0, 0%, 98%);
-    border-right: 1px solid hsl(216, 85%, 34%);
+    border-right: 1px solid hsl(206, 99%, 31%);
 }
 
 #projects-header {
     text-align: center;
-    color: hsl(207, 90%, 61%);
+    color: hsl(206, 99%, 31%);
     font-weight: 300;
     display: flex;
     justify-content: center;
@@ -86,7 +86,7 @@ header {
 }
 
 .project-tab h3 {
-    color: hsl(216, 85%, 34%);
+    color: hsl(206, 99%, 31%);
     width: 200px;
     font-weight: 400;
     padding: 5px;
@@ -111,26 +111,26 @@ header {
 
 .edit-project {
     background-color: hsl(199, 94%, 94%);
-    color: hsl(207, 90%, 54%);
-    border: 1px solid hsl(207, 90%, 54%);
+    color: hsl(206, 99%, 31%);
+    border: 1px solid hsl(206, 99%, 31%);
     transition: background-color 0.5s, color 0.5s;
 }
 
 .edit-project:hover {
-    background-color: hsl(207, 90%, 54%);
+    background-color: hsl(206, 99%, 31%);
     color: white;
     cursor: pointer;
 }
 
 .delete-project {
     background-color: hsl(351, 100%, 96%);
-    color: hsl(340, 82%, 52%);
-    border: 1px solid hsl(340, 82%, 52%);
+    color: hsl(0, 73%, 41%);
+    border: 1px solid hsl(0, 73%, 41%);
     transition: background-color 0.5s, color 0.5s;
 }
 
 .delete-project:hover {
-    background-color: hsl(340, 82%, 52%);
+    background-color: hsl(0, 73%, 41%);
     color: white;
     cursor: pointer;
 }
@@ -140,16 +140,16 @@ header {
     width: fit-content;
     height: fit-content;
     padding: 15px;
-    border: 1px solid hsl(210, 79%, 46%);
+    border: 1px solid hsl(206, 99%, 31%);
     border-radius: none;
     background-color: hsl(205, 87%, 94%);
-    color: hsl(210, 79%, 46%);
+    color: hsl(206, 99%, 31%);
     transition: background-color 0.5s, color 0.5s;
 }
 
 #new-project-button:hover {
     cursor: pointer;
-    background-color: hsl(207, 90%, 54%);
+    background-color: hsl(206, 99%, 31%);
     color: white;
 }
 
@@ -163,7 +163,7 @@ header {
 
 #todo-header {
     text-align: center;
-    color: hsl(207, 90%, 61%);
+    color: hsl(206, 99%, 31%);
     font-weight: 300;
     display: flex;
     justify-content: center;
@@ -233,39 +233,39 @@ header {
 
 .notes-todo {
     background-color: hsl(199, 94%, 94%);
-    color: hsl(207, 90%, 54%);
-    border: 1px solid hsl(207, 90%, 54%);
+    color: hsl(206, 99%, 31%);
+    border: 1px solid hsl(206, 99%, 31%);
     transition: background-color 0.5s, color 0.5s;
 }
 
 .notes-todo:hover {
-    background-color: hsl(207, 90%, 54%);
+    background-color: hsl(206, 99%, 31%);
     color: white;
     cursor: pointer;
 }
 
 .status-todo {
     background-color: hsl(125, 39%, 94%);
-    color: hsl(122, 39%, 49%);
-    border: 1px solid hsl(122, 39%, 49%);
+    color: hsl(103, 56%, 26%);
+    border: 1px solid hsl(103, 56%, 26%);
     transition: background-color 0.5s, color 0.5s;
 }
 
 .status-todo:hover {
-    background-color: hsl(122, 39%, 49%);
+    background-color: hsl(103, 56%, 26%);
     color: white;
     cursor: pointer;
 }
 
 .delete-todo {
     background-color: hsl(351, 100%, 96%);
-    color: hsl(340, 82%, 52%);
-    border: 1px solid hsl(340, 82%, 52%);
+    color: hsl(0, 73%, 41%);
+    border: 1px solid hsl(0, 73%, 41%);
     transition: background-color 0.5s, color 0.5s;
 }
 
 .delete-todo:hover {
-    background-color: hsl(340, 82%, 52%);
+    background-color: hsl(0, 73%, 41%);
     color: white;
     cursor: pointer;
 }
@@ -275,16 +275,16 @@ header {
     width: fit-content;
     height: fit-content;
     padding: 15px;
-    border: 1px solid hsl(210, 79%, 46%);
+    border: 1px solid hsl(206, 99%, 31%);
     border-radius: none;
     background-color: hsl(205, 87%, 94%);
-    color: hsl(210, 79%, 46%);
+    color: hsl(206, 99%, 31%);
     transition: background-color 0.5s, color 0.5s;
 }
 
 #new-todo-button:hover {
     cursor: pointer;
-    background-color: hsl(207, 90%, 54%);
+    background-color: hsl(206, 99%, 31%);
     color: white;
 }
 
@@ -301,23 +301,86 @@ header {
     height: 100%;
     overflow: auto;
     background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
 }
 
 .modal-content {
+    position: relative;
     background-color: #fefefe;
     padding: 20px;
-    border: 1px solid #888;
     width: 350px;
     display: grid;
     grid-template-rows: repeat(2, 1fr);
     gap: 15px;
+    animation-name: fadein;
+    animation-duration: 0.35s;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0
+    }
+    to {
+        opacity: 1
+    }
+}
+
+.modal-content input {
+    border-radius: none;
+    border: 1px solid hsl(200, 19%, 18%);
+    padding: 5px;
+    font-size: 1rem;
+}
+
+.modal-content input:focus {
+    background-color: hsl(199, 94%, 97%);
+}
+
+.modal-content label {
+    font-size: 1rem;
+}
+
+#priority-header {
+    text-align: center;
+}
+
+.modal-content #priority-choices {
+    line-height: 24px;
+}
+
+#dueDate-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#dueDate-container input {
+    margin-top: 10px;
+    width: 100%;
 }
 
 #todo-notes-modal-content {
-    grid-template-rows: 30px 1fr 30px 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+#notes-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.note-text {
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#notes-tip {
+    text-align: center;
+    color: hsl(199, 18%, 33%);
 }
 
 .modal-heading {
@@ -331,6 +394,21 @@ header {
 }
 
 .modal-buttons button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 70px;
     padding: 5px;
+    font-size: 14px;
+    border-radius: none;
+    border: 1px solid hsl(206, 99%, 31%);
+    background-color: hsl(205, 87%, 94%);
+    color: hsl(206, 99%, 31%);
+    transition: background-color 0.5s, color 0.5s;
+}
+
+.modal-buttons button:hover {
+    cursor: pointer;
+    background-color: hsl(206, 99%, 31%);
+    color: white;
 }

@@ -94,7 +94,6 @@ const DOMcontrol = (() => {
             }
         } else {
             if (projects.length == 0) {
-                console.log('No projects available.');
                 Object.assign(control.getCurrentProject(), projectControl);
                 while (todoList.firstChild) {
                     todoList.removeChild(todoList.firstChild);
@@ -108,9 +107,7 @@ const DOMcontrol = (() => {
                 let currentProjectTodos = control.getCurrentProject().getTodos();
                 let currentProjectIndex = control.getCurrentProjectIndex();
 
-                if (currentProjectTodos.length == 0) {
-                    console.log('No todos in this project.'); // convert this to UI element
-                } else {
+                if (currentProjectTodos.length == 0) {} else {
                     for (let i = 0; i < currentProjectTodos.length; i++) {
                         Object.assign(currentProjectTodos[i], todoControl);
 
@@ -173,20 +170,22 @@ const DOMcontrol = (() => {
                             todoBlock.style.border = '1px solid hsl(0, 100%, 42%)';
                             todoBlock.style.borderBottom = '5px solid hsl(0, 100%, 42%)';
                         } else if (todoPriority == 'medium') {
-                            todoBlock.style.border = '1px solid hsl(36, 100%, 57%)';
-                            todoBlock.style.borderBottom = '5px solid hsl(36, 100%, 57%)';
+                            todoBlock.style.border = '1px solid hsl(38, 100%, 50%)';
+                            todoBlock.style.borderBottom = '5px solid hsl(38, 100%, 50%)';
                         } else {
-                            todoBlock.style.border = '1px solid hsl(55, 100%, 50%)';
-                            todoBlock.style.borderBottom = '5px solid hsl(55, 100%, 50%)';
+                            todoBlock.style.border = '1px solid hsl(97, 81%, 48%)';
+                            todoBlock.style.borderBottom = '5px solid hsl(97, 81%, 48%)';
                         }
 
                         const todoStatus = currentProjectTodos[i].status;
                         if (todoStatus == true) {
                             todoName.style.textDecoration = 'line-through';
                             todoDescription.style.textDecoration = 'line-through';
+                            todoDueDate.style.textDecoration = 'line-through';
                         } else {
                             todoName.style.textDecoration = 'none';
                             todoDescription.style.textDecoration = 'none';
+                            todoDueDate.style.textDecoration = 'none';
                         }
 
                         todoList.appendChild(todoBlock);
@@ -257,7 +256,6 @@ const DOMcontrol = (() => {
         let notesArray = control.getCurrentProject().getTodos()[currentTodo].notes;
 
         if (notesArray.length == 0) {
-            console.log('No notes for this todo.');
             while (notesList.firstChild) {
                 notesList.removeChild(notesList.firstChild);
             }
@@ -271,6 +269,7 @@ const DOMcontrol = (() => {
                 note.id = 'note-' + control.getCurrentProjectIndex() + '-' + currentTodo + '-' + i;
                 note.className = 'note-text';
                 note.textContent = notesArray[i].text;
+                note.title = notesArray[i].text;
 
                 notesList.appendChild(note);
 
@@ -319,14 +318,13 @@ const DOMcontrol = (() => {
     }
 
     const addNewProject = () => {
-        const projects = control.getProjects();
         let addButton = document.querySelector('.modal-add-button');
         addButton.addEventListener('click', (event) => {
             if (newProjectNameInput.value == '') {
                 alert('Please enter project title.');
             } else {
                 control.addProject(newProjectNameInput.value);
-                control.changeCurrentProject(projects.length - 1);
+                control.changeCurrentProject(control.getProjects().length - 1);
                 newProjectModal.style.display = 'none';
                 newProjectNameInput.value = '';
             }
@@ -359,7 +357,7 @@ const DOMcontrol = (() => {
     }
 
     const confirmEditProject = () => {
-
+        renderTodos(control.getCurrentProjectIndex());
         let confirmButton = document.querySelector('.modal-confirm-button');
         confirmButton.addEventListener('click', (event) => {
             if (editProjectNameInput.value == '') {
